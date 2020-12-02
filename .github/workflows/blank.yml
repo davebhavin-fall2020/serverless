@@ -7,6 +7,9 @@ on:
   push:
     branches: [ main ]
 
+env:
+  s3_bucket_name: codedeploy-davebhavin-me
+
  
 jobs:
   build:
@@ -20,6 +23,8 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    
+
     - name: Configure AWS credentials from Test account
       uses: aws-actions/configure-aws-credentials@v1
       with:
@@ -32,9 +37,9 @@ jobs:
       run: |
         zip lambda.zip lambda.js package.json package-lock.json node_modules
         touch 777 lambdaFile.txt
-        aws s3 cp lambda.zip s3://lamb-dadavebhavin-me/
+        aws s3 cp lambda.zip s3://${s3_bucket_name}
         echo 'upload to s3 done'
 
     - name: deploy
       run: |
-           aws lambda update-function-code --function-name Email_Service --s3-bucket lamb-dadavebhavin-me --s3-key lambda.zip --region us-east-1 > lambdaFile.txt
+           aws lambda update-function-code --function-name Email_Service --s3-bucket ${s3_bucket_name} --s3-key lambda.zip --region us-east-1 > lambdaFile.txt
