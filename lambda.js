@@ -29,6 +29,13 @@ exports.emailService = function (event, context, callback) {
 	  };
 
       
-
+	  var sendPromise = new aws.SES({ apiVersion: '2010-12-01' }).sendEmail(emailParams).promise();
+	  sendPromise.then(
+		function (data) {
+		  console.log("Email sent to: "+email+" Message id:: "+ data.MessageId);
+		}).catch(
+		  function (err) {
+			console.error(err, err.stack);
+		  });
 	 
 };
