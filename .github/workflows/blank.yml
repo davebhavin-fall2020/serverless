@@ -34,21 +34,11 @@ jobs:
       run: |
         cp ../*.json .
         cp ../*.md .
-        zip -r webapp .
-        ls -a
-        aws s3 cp webapp.zip s3://${s3_bucket_name}
+        zip lambda.zip lambda.js package.json package-lock.json node_modules
+        touch 777 lambdaFile.txt
+        aws s3 cp lambda.zip s3://lamb-dadavebhavin-me/lambda.zip
         echo 'upload to s3 done'
 
     - name: deploy
       run: |
-          output=$(aws deploy create-deployment \
-          --application-name webapp \
-          --deployment-config-name CodeDeployDefault.AllAtOnce \
-          --deployment-group-name webapp-group \
-          --description "CSYE6255 - CodeDeploy" \
-          --s3-location bucket=${{ secrets.S3_BUCKET_NAME }},key=webapp.zip,bundleType=zip \
-          --region us-east-1 \
-          --output json)
-          echo $output
-          dId=$(echo $output | jq -r '.deploymentId')
-          aws deploy wait deployment-successful --deployment-id $dId
+           aws lambda update-function-code --function-name Email_Service --s3-bucket lamb-dadavebhavin-me --s3-key lambda.zip --region us-east-1 > lambdaFile.txt
