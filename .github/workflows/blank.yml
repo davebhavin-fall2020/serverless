@@ -20,11 +20,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Install
-      run: |
-        npm install 
-        sudo apt-get install awscli -y
-        sudo apt-get install less -y
+  
 
     - name: Zip and upload to s3
       run: |
