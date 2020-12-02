@@ -28,8 +28,7 @@ jobs:
 
     - name: Zip and upload to s3
       run: |
-        cp ../*.json .
-        cp ../*.md .
+        
         zip lambda.zip lambda.js package.json package-lock.json node_modules
        
         echo 'upload to s3 done'
