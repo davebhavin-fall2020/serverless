@@ -3,7 +3,7 @@ const aws = require("aws-sdk");
 const domain_name = "prod.davebhavin.me"
 aws.config.update({ region: "us-east-1" });
 exports.emailService = function (event, context, callback) {
-	let email= event.Records[0].Sns.Message;
+	let email= "bhavin.dave9@gmail.com";
 	console.log(email);
     let ques = event.Records[0].Sns.QuestionId;
 	 let emailMessage = 'https://'+domain_name+'/v1/question/';
@@ -26,7 +26,7 @@ exports.emailService = function (event, context, callback) {
 			Data: "Question has been answered"
 		  }
 		},
-		Source: "csye6225@" + domain_name
+		Source: "csye6225@prod.davebhavin.me"
 	  };
 
       
