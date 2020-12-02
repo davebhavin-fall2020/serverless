@@ -1,0 +1,44 @@
+# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Node.js CI
+
+on:
+  push:
+    branches: [ master ]
+
+env:
+  
+  AWS_AMI_REGION: ${{ secrets.AWS_AMI_REGION }}
+  CD_APP_NAME: ${{ secrets.CD_APP_NAME }}
+  D_APP_DEPLOY_GNAME: ${{ secrets.D_APP_DEPLOY_GNAME }}
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [8.x]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install
+      run: |
+        npm install 
+        sudo apt-get install awscli -y
+        sudo apt-get install less -y
+
+    - name: Zip and upload to s3
+      run: |
+        cp ../*.json .
+        cp ../*.md .
+        zip lambda.zip lambda.js package.json package-lock.json node_modules
+        touch 777 lambdaFile.txt
+        aws s3 cp lambda.zip s3://lamb-dadavebhavin-me/lambda.zip
+        echo 'upload to s3 done'
+
+    - name: deploy
+      run: |
+           aws lambda update-function-code --function-name Email_Service --s3-bucket lamb-dadavebhavin-me --s3-key lambda.zip --region us-east-1 > lambdaFile.txt
