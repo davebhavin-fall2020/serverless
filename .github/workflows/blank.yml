@@ -27,11 +27,6 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-east-1
 
-    - name: Install
-      run: |
-        npm install 
-        sudo apt-get install awscli -y
-        sudo apt-get install less -y
 
     - name: Zip and upload to s3
       run: |
