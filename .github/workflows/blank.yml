@@ -32,7 +32,7 @@ jobs:
       run: |
         zip lambda.zip lambda.js package.json package-lock.json node_modules
         touch 777 lambdaFile.txt
-        aws s3 cp lambda.zip s3://lamb-dadavebhavin-me/lambda.zip
+        aws s3 cp lambda.zip s3://lamb-dadavebhavin-me/
         echo 'upload to s3 done'
 
     - name: deploy
