@@ -5,13 +5,10 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
 
 env:
-  
-  AWS_AMI_REGION: ${{ secrets.AWS_AMI_REGION }}
-  CD_APP_NAME: ${{ secrets.CD_APP_NAME }}
-  D_APP_DEPLOY_GNAME: ${{ secrets.D_APP_DEPLOY_GNAME }}
+ 
 jobs:
   build:
 
