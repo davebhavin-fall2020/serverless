@@ -20,13 +20,17 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-  
+    - name: Install
+      run: |
+        npm install 
+        sudo apt-get install awscli -y
+        sudo apt-get install less -y
 
     - name: Zip and upload to s3
       run: |
-        
         zip lambda.zip lambda.js package.json package-lock.json node_modules
-       
+        touch 777 lambdaFile.txt
+        aws s3 cp lambda.zip s3://lamb-dadavebhavin-me/lambda.zip
         echo 'upload to s3 done'
 
     - name: deploy
