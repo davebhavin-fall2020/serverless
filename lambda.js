@@ -25,7 +25,7 @@ exports.emailService = function (event, context, callback) {
 			Data: "Question has been answered"
 		  }
 		},
-		Source: "csye6225" + domain_name
+		Source: "csye6225@" + domain_name
 	  };
 
       
