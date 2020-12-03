@@ -4,7 +4,6 @@ const domain_name = "prod.davebhavin.me"
 aws.config.update({ region: "us-east-1" });
 exports.emailService = function (event, context, callback) {
 	let message= event.Records[0].Sns.Message;
-	console.log(email);
 	let messageJson = JSON.parse(message);
 	let messageDataJson = JSON.parse(messageJson.data);
 	 let emailMessage = 'https://'+domain_name+'/v1/question/'+messageDataJson.Qid;
