@@ -61,7 +61,28 @@ exports.emailService = function (event, context, callback) {
 
 	}
 	else{
-
+		let emailMessage = 'http://'+domain_name+'/v1/question/'+messageDataJson.Qid;
+	 var emailParams = {
+		Destination: {
+		  ToAddresses: [
+			messageDataJson.Email
+		  ]
+		},
+		Message: {
+		  Body: {
+	
+			Html: {
+			  Charset: "UTF-8",
+			  Data: "Your Qid "+messageDataJson.Qid+"with Ans id is "+messageDataJson.Aid+" has ans deleted "+emailMessage
+			}
+		  },
+		  Subject: {
+			Charset: "UTF-8",
+			Data: "answer has been deleted"
+		  }
+		},
+		Source: "csye6225@prod.davebhavin.me"
+	  };
 
 	}
 	  var sendPromise = new aws.SES({ apiVersion: '2010-12-01' }).sendEmail(emailParams).promise();
