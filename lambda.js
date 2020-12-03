@@ -6,7 +6,8 @@ exports.emailService = function (event, context, callback) {
 	let message= event.Records[0].Sns.Message;
 	let messageJson = JSON.parse(message);
 	let messageDataJson = JSON.parse(messageJson.data);
-	 let emailMessage = 'https://'+domain_name+'/v1/question/'+messageDataJson.Qid;
+	if(messageDataJson=="1"){
+	 let emailMessage = 'http://'+domain_name+'/v1/question/'+messageDataJson.Qid;
 	 var emailParams = {
 		Destination: {
 		  ToAddresses: [
@@ -29,7 +30,40 @@ exports.emailService = function (event, context, callback) {
 		Source: "csye6225@prod.davebhavin.me"
 	  };
 
-      
+	}
+	else if(messageDataJson=="2"){
+
+
+
+		let emailMessage = 'http://'+domain_name+'/v1/question/'+messageDataJson.Qid;
+	 var emailParams = {
+		Destination: {
+		  ToAddresses: [
+			messageDataJson.Email
+		  ]
+		},
+		Message: {
+		  Body: {
+	
+			Html: {
+			  Charset: "UTF-8",
+			  Data: "Your Qid "+messageDataJson.Qid+"has been answered and Ans id is "+messageDataJson.Aid+" Ans to your question is "+ messageDataJson.AnsTextNew+" and link to your text is "+emailMessage
+			}
+		  },
+		  Subject: {
+			Charset: "UTF-8",
+			Data: "answer has been updated"
+		  }
+		},
+		Source: "csye6225@prod.davebhavin.me"
+	  };
+
+
+	}
+	else{
+
+
+	}
 	  var sendPromise = new aws.SES({ apiVersion: '2010-12-01' }).sendEmail(emailParams).promise();
 	  sendPromise.then(
 		function (data) {
