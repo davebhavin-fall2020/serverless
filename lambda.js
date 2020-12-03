@@ -3,14 +3,15 @@ const aws = require("aws-sdk");
 const domain_name = "prod.davebhavin.me"
 aws.config.update({ region: "us-east-1" });
 exports.emailService = function (event, context, callback) {
-	let email= event.Records[0].Sns.Message;
+	let message= event.Records[0].Sns.Message;
 	console.log(email);
-    let ques = event.Records[0].Sns.QuestionId;
-	 let emailMessage = 'https://'+domain_name+'/v1/question/';
+	let messageJson = JSON.parse(message);
+	let messageDataJson = JSON.parse(messageJson.data);
+	 let emailMessage = 'https://'+domain_name+'/v1/question/'+messageDataJson.Qid;
 	 var emailParams = {
 		Destination: {
 		  ToAddresses: [
-			email
+			messageDataJson.Email
 		  ]
 		},
 		Message: {
@@ -18,7 +19,7 @@ exports.emailService = function (event, context, callback) {
 	
 			Html: {
 			  Charset: "UTF-8",
-			  Data: emailMessage
+			  Data: "Your Qid "+messageDataJson.Qid+"has been answered and Ans id is "+messageDataJson.Aid+" Ans to your question is "+ messageDataJson.AnsText+" and link to your text is "+emailMessage
 			}
 		  },
 		  Subject: {
