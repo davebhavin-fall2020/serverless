@@ -6,7 +6,7 @@ exports.emailService = function (event, context, callback) {
 	let message= event.Records[0].Sns.Message;
 	let messageJson = JSON.parse(message);
 	let messageDataJson = JSON.parse(messageJson.data);
-	if(messageDataJson=="1"){
+	if(messageDataJson.type=="1"){
 	 let emailMessage = 'http://'+domain_name+'/v1/question/'+messageDataJson.Qid;
 	 var emailParams = {
 		Destination: {
@@ -31,7 +31,7 @@ exports.emailService = function (event, context, callback) {
 	  };
 
 	}
-	else if(messageDataJson=="2"){
+	else if(messageDataJson.type=="2"){
 
 
 
