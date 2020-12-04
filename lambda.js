@@ -48,7 +48,7 @@ exports.emailService = function (event, context, callback) {
 	
 			Html: {
 			  Charset: "UTF-8",
-			  Data: "Your Qid "+messageDataJson.Qid+"has been answered and Ans id is "+messageDataJson.Aid+" Ans to your question is "+ messageDataJson.AnsTextNew+" and link to your text is "+emailMessage
+			  Data: "Your Qid "+messageDataJson.Qid+"has been answered and Ans id is "+messageDataJson.Aid+" Ans to your question is "+ messageDataJson.AnsText+" and link to your text is "+emailMessage
 			}
 		  },
 		  Subject: {
