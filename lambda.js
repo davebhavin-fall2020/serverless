@@ -1,5 +1,6 @@
 const aws = require("aws-sdk");
-//const uuid1 = require('uuid');
+const documentClient = new aws.DynamoDB.DocumentClient({ region: "us-east-1" });
+
 const domain_name = "prod.davebhavin.me"
 aws.config.update({ region: "us-east-1" });
 exports.emailService = function (event, context, callback) {
@@ -85,13 +86,57 @@ exports.emailService = function (event, context, callback) {
 	  };
 
 	}
-	  var sendPromise = new aws.SES({ apiVersion: '2010-12-01' }).sendEmail(emailParams).promise();
-	  sendPromise.then(
-		function (data) {
-		  console.log("Email sent to: "+email+" Message id:: "+ data.MessageId);
-		}).catch(
-		  function (err) {
-			console.error(err, err.stack);
-		  });
-	 
+
+
+
+	let putParams = {
+		TableName: "csy6225_dynamo",
+		Item: {
+		  id:  messageDataJson.Email+messageDataJson.Qid+messageDataJson.AnsText 
+		}
+	  };
+	  let queryParams = {
+		TableName: 'csy6225_dynamo',
+		Key: {
+		  'id':messageDataJson.Email+messageDataJson.Qid+messageDataJson.AnsText
+		},
+	  }
+
+	  documentClient.get(queryParams, function (err, data) {
+		if (err) console.log(err, err.stack); // an error occurred
+		else if(messageDataJson.type=="1"|| messageDataJson.type=="2" ) {
+		  console.log("Data from dynamo db " + data);
+		  if (data.Item == null) {
+			documentClient.put(putParams, function (error, result) {
+			  if (error) {
+				console.log("Error in putting data " + error)
+			  }
+			  else {
+				var sendPromise = new aws.SES({ apiVersion: '2010-12-01' }).sendEmail(emailParams).promise();
+				sendPromise.then(
+				  function (data) {
+					console.log("Email sent to: "+email+" Message id:: "+ data.MessageId);
+				  }).catch(
+					function (err) {
+					  console.error(err, err.stack);
+					});
+			  }
+			})
+		  }
+		  else {
+			console.log("Email ID exists");
+		  }
+		}
+		else{
+			var sendPromise = new aws.SES({ apiVersion: '2010-12-01' }).sendEmail(emailParams).promise();
+				sendPromise.then(
+				  function (data) {
+					console.log("Email sent to: "+email+" Message id:: "+ data.MessageId);
+				  }).catch(
+					function (err) {
+					  console.error(err, err.stack);
+					});
+		}
+	  })
+
 };
