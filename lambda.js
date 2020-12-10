@@ -8,7 +8,7 @@ exports.emailService = function (event, context, callback) {
 	let messageJson = JSON.parse(message);
 	let messageDataJson = JSON.parse(messageJson.data);
 	if(messageDataJson.type=="1"){
-	 let emailMessage = 'http://'+domain_name+'/v1/question/'+messageDataJson.Qid;
+	 let emailMessage = 'https://'+domain_name+'/v1/question/'+messageDataJson.Qid;
 	 var emailParams = {
 		Destination: {
 		  ToAddresses: [
@@ -36,7 +36,7 @@ exports.emailService = function (event, context, callback) {
 
 
 
-		let emailMessage = 'http://'+domain_name+'/v1/question/'+messageDataJson.Qid;
+		let emailMessage = 'https://'+domain_name+'/v1/question/'+messageDataJson.Qid;
 	 var emailParams = {
 		Destination: {
 		  ToAddresses: [
@@ -62,7 +62,7 @@ exports.emailService = function (event, context, callback) {
 
 	}
 	else{
-		let emailMessage = 'http://'+domain_name+'/v1/question/'+messageDataJson.Qid;
+		let emailMessage = 'https://'+domain_name+'/v1/question/'+messageDataJson.Qid;
 	 var emailParams = {
 		Destination: {
 		  ToAddresses: [
